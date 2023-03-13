@@ -1,0 +1,37 @@
+version: '3.8'
+
+networks:
+  demo-network:
+    driver: bridge
+
+services:
+  democ:
+    container_name: demoC-api
+    build:
+      context: ./demoC
+      dockerfile: Dockerfile
+    networks:
+      - demo-network
+
+  demob:
+    depends_on:
+      - democ
+    container_name: demoB-api
+    build:
+      context: ./demoB
+      dockerfile: Dockerfile
+    networks:
+      - demo-network
+
+  demoa:
+    depends_on:
+      - democ
+      - demob
+    container_name: demoA-api
+    build:
+      context: ./demoA
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+      - demo-network
