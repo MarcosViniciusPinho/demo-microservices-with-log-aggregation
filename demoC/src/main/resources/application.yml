@@ -1,0 +1,7 @@
+logging:
+  level:
+    web: trace
+
+spring:
+  application:
+    name: demoC

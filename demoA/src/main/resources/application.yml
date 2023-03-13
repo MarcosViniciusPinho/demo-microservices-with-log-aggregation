@@ -1,0 +1,19 @@
+logging:
+  level:
+    web: trace
+
+client:
+  demoB:
+    url: http://demoB:8080
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+        loggerLevel: FULL
+
+spring:
+  application:
+    name: demoA
