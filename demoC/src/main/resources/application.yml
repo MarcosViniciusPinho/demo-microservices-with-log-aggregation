@@ -1,6 +1,6 @@
 logging:
   level:
-    web: trace
+    web: info
 
 spring:
   application:

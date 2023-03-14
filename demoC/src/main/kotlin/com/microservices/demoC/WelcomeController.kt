@@ -14,8 +14,14 @@ class WelcomeController {
     fun welcome(@RequestBody request: RequestDTO): ResponseEntity<ResponseDTO> =
         logger().info { "Welcome in microservice C" }
             .let {
-                ResponseEntity.status(HttpStatus.CREATED)
+
+                val response = ResponseEntity.status(HttpStatus.CREATED)
                     .body(ResponseDTO(request.message).hello())
+
+                logger().info { "Value in request: $request" }
+                logger().info { "Value in response: $response" }
+
+                response
             }
 
 }
