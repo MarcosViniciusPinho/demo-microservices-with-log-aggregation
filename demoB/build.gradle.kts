@@ -17,15 +17,26 @@ repositories {
 
 extra["springCloudVersion"] = "2021.0.6"
 
+configurations.all {
+	exclude(group = "org.springframework.boot", module = "spring-boot-starter-logging")
+}
+
 dependencies {
-	implementation("org.springframework.boot:spring-boot-starter-web"){
-		exclude(module = "spring-boot-starter-logging")
-	}
+	implementation("org.springframework.boot:spring-boot-starter-web")
+
+	//Dependencies Kotlin
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
+
+	//Dependency openfeign
 	implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
-	testImplementation("org.springframework.boot:spring-boot-starter-test")
+
+	//Dependencies Logs
 	implementation("org.apache.logging.log4j:log4j-api-kotlin:1.2.0")
+	implementation("org.springframework.boot:spring-boot-starter-log4j2")
+	implementation("co.elastic.logging:log4j2-ecs-layout:1.4.0")
+
+	testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
 dependencyManagement {

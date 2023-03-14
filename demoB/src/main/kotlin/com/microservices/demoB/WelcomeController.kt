@@ -17,7 +17,12 @@ class WelcomeController(
         logger().info { "Welcome in microservice B" }
             .let {
                 val client = client.helloDemoC(FeignClientService.Client(request.message))
-                ResponseEntity.status(HttpStatus.CREATED)
+                val response = ResponseEntity.status(HttpStatus.CREATED)
                     .body(ResponseDTO(client.message).hello())
+
+                logger().info { "Value in request: $request" }
+                logger().info { "Value in response: $response" }
+
+                response
             }
 }
