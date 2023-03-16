@@ -1,0 +1,9 @@
+cluster.name: "docker-cluster"
+network.host: 0.0.0.0
+
+discovery.seed_hosts: "elasticsearch"
+discovery.type: "single-node"
+
+xpack.security.enabled: true
+xpack.license.self_generated.type: trial
+xpack.monitoring.collection.enabled: true

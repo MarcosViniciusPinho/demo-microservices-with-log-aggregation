@@ -3,8 +3,56 @@ version: '3.8'
 networks:
   demo-network:
     driver: bridge
+  es-network:
+    driver: bridge
 
 services:
+  elasticsearch:
+    labels:
+      co.elastic.logs/module: elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.16.3
+    container_name: elasticsearch
+    ports:
+      - '9200:9200'
+    environment:
+      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+      ELASTIC_PASSWORD: changeme
+      discovery.type: single-node
+    volumes:
+      - ./elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+    networks:
+      - es-network
+
+  kibana:
+    depends_on:
+      - elasticsearch
+    image: docker.elastic.co/kibana/kibana:7.16.3
+    container_name: kibana
+    labels:
+      co.elastic.logs/module: kibana
+    volumes:
+      - ./kibana/kibana.yml:/usr/share/kibana/config/kibana.yml
+    networks:
+      - es-network
+    ports:
+      - '5601:5601'
+
+  filebeat:
+    depends_on:
+      - elasticsearch
+      - kibana
+    image: docker.elastic.co/beats/filebeat:7.16.3
+    container_name: filebeat
+    user: root
+    command:
+      - -e
+      - --strict.perms=false
+    volumes:
+      - ./filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml
+      - ./logs:/usr/share/filebeat/logs
+    networks:
+      - es-network
+
   democ:
     container_name: demoC-api
     build:
