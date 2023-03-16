@@ -4,7 +4,7 @@
         <Console name="LogToConsole" target="SYSTEM_OUT">
             <EcsLayout serviceName="demoC" serviceNodeName="demo-cluster-node"/>
         </Console>
-        <File name="LogToFile" fileName="home/spring/logs/demoC.log">
+        <File name="LogToFile" fileName="home/spring/logs/demoC/demoC.log">
             <EcsLayout serviceName="demoC" serviceNodeName="demo-cluster-node"/>
         </File>
     </Appenders>
