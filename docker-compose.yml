@@ -49,9 +49,11 @@ services:
       - --strict.perms=false
     volumes:
       - ./filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml
-      - ./logs:/usr/share/filebeat/logs
+      - /var/lib/docker/containers:/var/lib/docker/containers
+      - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - es-network
+      - demo-network
 
   democ:
     container_name: demoC-api
