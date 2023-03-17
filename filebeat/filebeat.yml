@@ -1,11 +1,9 @@
 filebeat.inputs:
-  - type: container
-    paths:
-      - /var/lib/docker/containers/*/*.log
+  - type: docker
+    containers.ids:
+      - '*'
     processors:
       - add_docker_metadata: ~
 
-output.elasticsearch:
-  hosts: ['http://elasticsearch:9200']
-  username: elastic
-  password: changeme
+output.logstash:
+  hosts: ["logstash:5044"]
