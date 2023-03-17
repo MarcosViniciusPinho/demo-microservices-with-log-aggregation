@@ -4,13 +4,9 @@
         <Console name="LogToConsole" target="SYSTEM_OUT">
             <EcsLayout serviceName="demoA" serviceNodeName="demo-cluster-node"/>
         </Console>
-        <File name="LogToFile" fileName="home/spring/logs/demoA/demoA.log">
-            <EcsLayout serviceName="demoA" serviceNodeName="demo-cluster-node"/>
-        </File>
     </Appenders>
     <Loggers>
         <Root level="info">
-            <AppenderRef ref="LogToFile"/>
             <AppenderRef ref="LogToConsole"/>
         </Root>
     </Loggers>
