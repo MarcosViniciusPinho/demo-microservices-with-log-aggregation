@@ -1,63 +1,64 @@
 # Applying log aggregation pattern in microservices
 
-Quando o assunto é microserviço sabemos que é de extrema importância aplicarmos o pattern log aggregation, não é mesmo?<br />
-Para quem não sabe ou não ouviu falar deste pattern, o mesmo tem a motivação de resolver o problema de termos multiplos logs espalhados por todo nosso ecossistema de microserviços, onde o mesmo centraliza todos os logs em um único lugar, isto nos ajuda a monitorar nossas apps.
+When it comes to microservices, we know that it is extremely important to apply the log aggregation pattern, right?<br />
+For those who don't know or haven't heard about this pattern, it has the motivation to solve the problem of having multiple logs spread throughout our microservices ecosystem, where it centralizes all the logs in a single place, this helps us to monitor our apps.
 
-Bom, vamos começar...
-Para poder dar continuidade é obrigatório ter o docker e docker-compose instalados na máquina, caso não os tenha por favor, faça suas respectivas instalações.
+Alright, let's get started...
+In order to continue, it is mandatory to have docker and docker-compose installed on the machine, if you don't have them, please install them.
 
-Agora para dar um melhor entendimento geral deste projeto o mesmo esta dividido basicamente em seus microserviços com o log aggregation, conforme a imagem abaixo: 
+Now, to give a better general understanding of this project, it is basically divided into its microservices with log aggregation, as shown in the image below:
 <br />![](images/microservices_division.png)
 
-Podemos ver nesta imagem que existem 3 microserviços disponíveis que são os: **demoA-api, demoB-api e o demoC-api.**
+We can see in this image that there are 3 microservices available which are: **demoA-api, demoB-api and demoC-api.**
 
 <ul>
-    <li>demoA-api -> É basicamente um gateway que fica disponível para ser acessado de forma externa e repassa a requisição para o microservice demoB-api que depois recupera sua devida resposta.</li>
-    <li>demoB-api -> Esta inacessivel de forma externa e somente visivel na rede interna e que passa a requisição para o outro microservice demoC-api que depois recupera sua devida resposta e os envia para o demoA-api.</li>
-    <li>demoC-api -> Esta inacessível de forma externa e apenas acessível na rede interna e envia a resposta para o microservice demoB-api</li>
-    <li>elasticstack* -> Esta foi a solução adotada para podermos implementar o pattern log aggregation que tem como responsabilidade fazer a monitoria de logs dos microsserviços</li>
+    <li>demoA-api -> It is basically a gateway that is available to be accessed externally and forwards the request to the demoB-api microservice which then retrieves its proper response.</li>
+    <li>demoB-api -> It is inaccessible externally and is only visible on the internal network, which passes the request to another microservice demoC-api, which then retrieves its proper response and sends it to the demoA-api.</li>
+    <li>demoC-api -> This is inaccessible externally and only accessible on the internal network and sends the response to the microservice demoB-api</li>
+    <li>elasticstack* -> This was the solution adopted so that we could implement the log aggregation pattern, which is responsible for monitoring microservices logs</li>
 </ul>
 
-Agora vamos entender como o elasticstack foi dividido e também construido desde pegar o log, processá-lo e disponibilizá-lo de forma visual, conforme imagem abaixo:
+Now let's understand how the elasticstack was divided and also built from taking the log, processing it and making it available in a visual way, as shown in the image below:
 ![](images/elasticstack_division.png)
 
-Podemos ver nesta imagem que existem 4 dockers disponíveis que são os: **Filebeat, Logstash, Elasticsearch e Kibana.**
+We can see in this image that there are 4 dockers available which are: **Filebeat, Logstash, Elasticsearch and Kibana.**
 
 <ul>
-    <li>Filebeat -> Faz a monitoria de logs dos containers que estão na mesma rede e os envia para o logstash</li>
-    <li>Logstash -> Recebe os logs de filebeat e os processa, no caso estamos processando apenas as informações contidas em nossos microserviços. Após o processamento, o mesmo os envia para o elasticsearch.</li>
-    <li>Elasticsearch -> Recebe os logs, armazenam e os indexa. Conseguimos visualizar os logs de forma visual aqui, onde também é possível criar querys em cima destes logs.</li>
-    <li>Kibana -> Basicamente é uma interface de forma exclusiva para acessar os logs contidos no Elasticsearch, inclusive é o mais utilizado para visualização. Com ele é possível criar dashborads e etc...</li>
+    <li>Filebeat -> Monitors logs from containers that are on the same network and sends them to logstash</li>
+    <li>Logstash -> Receives the filebeat logs and processes them, in this case we are only processing the information contained in our microservices. After processing, it sends them to elasticsearch.</li>
+    <li>Elasticsearch -> Receive logs, store and index them. We can visualize the logs visually here, where it is also possible to create queries on top of these logs.</li>
+    <li>Kibana -> Basically it is an exclusive interface to access the logs contained in Elasticsearch, it is also the most used for visualization. With it you can create dashborads and etc...</li>
 </ul>
 
-**Considerações importantes:**
+**Important considerations:**
 <ul>
-    <li>A idéia deste projeto foi mais focado para demonstrar a aplicação do pattern log aggregation e isto implica na infra do mesmo, os microservices em si não são relevantes, são bem triviais mesmo.</li>
-    <li>O projeto foi criado para poder rodar em qualquer sistema operacional desde que esteja com o docker e o docker-compose instalados.</li>
-    <li>Existem outros tipos de configurações e formas de fazer, porém o intuito aqui é ser o mais simples possível para ter uma melhor absorção do conhecimento deste pattern tanto na teoria quanto na prática.</li>
+    <li>The idea of this project was more focused on demonstrating the application of the log aggregation pattern and this implies in its infrastructure, the microservices themselves are not relevant, they are quite trivial.</li>
+    <li>The project was created to run on any operating system as long as it has docker and docker-compose installed.</li>
+    <li>There are other types of configurations and ways to do it, but the intention here is to be as simple as possible to have a better absorption of the knowledge of this pattern both in theory and in practice.</li>
 </ul>
 
-Bom... Chegou a hora, vamos rodar essa brincadeira toda? ;)
+Well... It's time, let's roll this whole joke? ;)
 
-1) Primeiro devemos iniciar todos os nossos microservices, assim como o nosso log aggregation. Vamos digitar o comando no terminal: `docker-compose up -d`
-2) Vamos aguardar alguns segundos para a solução subir de forma completa, assim que o ambiente estiver disponível acessar a seguinte URL: [http://localhost:5601/login?next=%2F]()
-3) Iremos visualizar esta tela:
+1) First we must start all our microservices, as well as our log aggregation. Let's type the command in the terminal: `docker-compose up -d`
+2) Let's wait a few seconds for the solution to upload completely, as soon as the environment is available access the following URL:
+[http://localhost:5601/login?next=%2F]()
+3) We will see this screen:
 <br />![](images/login_elastic.png)
 
-Obs: O usuário e senha serão preenchidos de forma automática, porém de qualquer forma as credencais de acesso são elastic(user) e changeme(password)
+Note: The username and password will be filled in automatically, however the access credentials are elastic(user) and changeme(password)
 
-4) Logo após logar, vá ao menu na parte lateral, vá em "Analytics" e selecione a opção de "Discover", segue imagem para ajuda:
+4) Right after logging in, go to the menu on the side, go to "Analytics" and select the "Discover" option, follow the image for help:
 ![](images/selected_discover_create_index.png)
 
-5) Após clicar em "Discover" irá aparecer um modal, que é para a criação de um index. Clique no botão "Create index pattern" e assim que o fizer irá aparecer a seguinte tela, conforme a imagem abaixo:
+5) After clicking on "Discover" a modal will appear, which is for creating an index. Click on the "Create index pattern" button and once you do, the following screen will appear, as shown in the image below:
 ![](images/create_index_pattern.png)
 
 <ul>
-    <li>Na primeira informação a ser preenchida, devemos adotar o padrão de contains; ou seja; posso informar o `filebeat-*` que ele me traz todos os logs, caso quisessemos algo especifico para recuperar os logs referentes ao mês daquele determinado ano poderíamos adotar o `filebeat-7.16.3-2023.03.*` </li>
-    <li>Na segunda informação a ser preenchida, obrigatoriamente devemos selecionar o `@timestamp`, conforme imagem mostrada.</li>
+    <li>In the first information to be filled in, we must adopt the contains pattern; i.e; I can inform `filebeat-*` that it brings me all the logs, if we wanted something specific to recover the logs referring to the month of that particular year we could adopt `filebeat-7.16.3-2023.03.*` </li>
+    <li>In the second information to be filled in, we must select `@timestamp`, as shown in the image.</li>
 </ul>
 
-6) Vamos executar o curl: `curl --location --request GET 'http://localhost:8080'` já para aparecer nos logs.
+6) Let's run curl: `curl --location --request GET 'http://localhost:8080'` to appear in the logs.
 
-7) Depois que criarmos este index, devemos retornar ao menu "Discover" novamente que iremos ter como resultado os logs, conforme imagem a seguir:
+7) After creating this index, we must return to the "Discover" menu again, which will result in the logs, as shown in the following image:
 ![](images/detail_logs.png)
