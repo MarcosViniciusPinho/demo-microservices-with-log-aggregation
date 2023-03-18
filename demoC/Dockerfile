@@ -1,14 +1,15 @@
-FROM eclipse-temurin:17-jdk
-
-RUN apt-get update && apt-get install -y curl
+FROM gradle:7.5.1-jdk17 AS build
 
 COPY . /home/spring/demoC
 WORKDIR /home/spring/demoC
+RUN gradle clean build --info
 
-RUN ./gradlew clean build
+FROM eclipse-temurin:17-jdk
 
 RUN adduser --system --group spring
 USER spring:spring
 
+COPY --from=build home/spring/demoC/build/libs/demoC-*.jar /home/spring/demoC/demoC.jar
+
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "/home/spring/demoC/build/libs/demoC-0.0.1.jar"]
+ENTRYPOINT ["java", "-jar", "/home/spring/demoC/demoC.jar"]
