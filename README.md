@@ -7,7 +7,7 @@ Bom, vamos começar...
 Para poder dar continuidade é obrigatório ter o docker e docker-compose instalados na máquina, caso não os tenha por favor faça suas respectivas instalações.
 
 Agora para dar um melhor entendimento geral deste projeto o mesmo esta dividido basicamente em seus microserviços com o log aggregation, conforme a imagem abaixo: 
-#![](images/microservices_division.png)
+<br />![](images/microservices_division.png)
 
 Podemos ver nesta imagem que existem 3 microserviços disponíveis que são os: **demoA-api, demoB-api e o demoC-api.**
 
@@ -19,7 +19,7 @@ Podemos ver nesta imagem que existem 3 microserviços disponíveis que são os: 
 </ul>
 
 Agora vamos entender com um olhar dentro do elasticstack como foi dividido  e como foi construido desde pegar o log, processá-lo e disponibilizá-lo de forma visual, conforme imagem abaixo:
-#![](images/elasticstack_division.png)
+![](images/elasticstack_division.png)
 
 Podemos ver nesta imagem que existem 4 dockers disponíveis que são os: **Filebeat, Logstash, Elasticsearch e Kibana.**
 
@@ -42,19 +42,22 @@ Bom... Chegou a hora, vamos rodar essa brincadeira toda? ;)
 1) Primeiro devemos iniciar todos os nossos microservices, assim como o nosso log aggregation. Vamos digitar o comando no terminal: `docker-compose up -d`
 2) Vamos aguardar alguns segundos para a solução subir de forma completa, assim que o ambiente estiver disponível acessar a seguinte URL: [http://localhost:5601/login?next=%2F]()
 3) Iremos visualizar esta tela:
-#![](images/login_elastic.png)
+<br />![](images/login_elastic.png)
 
 Obs: O usuário e senha serão preenchidos de forma automática, porém de qualquer forma as credencais de acesso são elastic(user) e changeme(password)
 
 4) Logo após logar, vá na menu na parte lateral, vá em Analytics e selecione a opção de "Discover", segue imagem para ajuda:
-#![](images/selected_discover_create_index.png)
+![](images/selected_discover_create_index.png)
 
 5) Após clicar em "Discover" irá aparecer o seguinte modal, que é para a criação de um index. Clique no botão "Create index pattern" e assim que o fizer irá aparecer a seguinte tela, conforme a imagem abaixo:
-#![](images/create_index_pattern.png)
+![](images/create_index_pattern.png)
 
-Na primeira informação a ser fornecida, devemos adotar o padrão de contains; ou seja; posso informar o `filebeat-*` que ele me traz todos os logs, caso queremos algo especifico só precisamos informar o `filebeat-7.16.3-2023.03.*` 
+<ul>
+    <li>Na primeira informação a ser fornecida, devemos adotar o padrão de contains; ou seja; posso informar o `filebeat-*` que ele me traz todos os logs, caso queremos algo especifico só precisamos informar o `filebeat-7.16.3-2023.03.*` </li>
+    <li>Na segunda informação a ser fornecida obrigatoriamente devemos selecionar o `@timestamp`, conforme imagem mostrada.</li>
+</ul>
 
 6) Vamos executar o curl: `curl --location --request GET 'http://localhost:8080'` já para aparecer nos logs.
 
 7) Depois que criarmos este index, devemos retornar ao menu "Discover" novamente que iremos ter como resultado os logs, conforme imagem a seguir:
-#![](images/detail_logs.png)
+![](images/detail_logs.png)
