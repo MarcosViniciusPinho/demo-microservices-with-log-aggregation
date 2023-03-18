@@ -27,7 +27,7 @@ We can see in this image that there are 4 dockers available which are: **Filebea
     <li>Filebeat -> Monitors logs from containers that are on the same network and sends them to logstash</li>
     <li>Logstash -> Receives the filebeat logs and processes them, in this case we are only processing the information contained in our microservices. After processing, it sends them to elasticsearch.</li>
     <li>Elasticsearch -> Receive logs, store and index them. We can visualize the logs visually here, where it is also possible to create queries on top of these logs.</li>
-    <li>Kibana -> Basically it is an exclusive interface to access the logs contained in Elasticsearch, it is also the most used for visualization. With it you can create dashborads and etc...</li>
+    <li>Kibana -> It is another way of viewing the logs stored in elasticsearch, we can use it as a panel for example and in it we create queries to return information that we consider interesting to view.</li>
 </ul>
 
 **Important considerations:**
