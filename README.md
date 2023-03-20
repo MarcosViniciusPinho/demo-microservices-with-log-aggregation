@@ -1,64 +1,58 @@
-# Applying log aggregation pattern in microservices
+# Implementing the log aggregation pattern within microservices
 
-When it comes to microservices, we know that it is extremely important to apply the log aggregation pattern, right?<br />
-For those who don't know or haven't heard about this pattern, it has the motivation to solve the problem of having multiple logs spread throughout our microservices ecosystem, where it centralizes all the logs in a single place, this helps us to monitor our apps.
+When it comes to microservices, applying the log aggregation pattern is crucial. This pattern solves the problem of having multiple logs scattered throughout the microservices ecosystem by centralizing them in one place, making it easier to monitor our applications.
 
-Alright, let's get started...
-In order to continue, it is mandatory to have docker and docker-compose installed on the machine, if you don't have them, please install them.
+To get started, it's essential to have Docker and Docker Compose installed on your machine. If you don't already have them, please install them before proceeding.
 
-Now, to give a better general understanding of this project, it is basically divided into its microservices with log aggregation, as shown in the image below:
+Now, let's take a closer look at the project. It's divided into several microservices, each with log aggregation capabilities, as illustrated in the image below:
 <br />![](images/microservices_division.png)
 
-We can see in this image that there are 3 microservices available which are: **demoA-api, demoB-api and demoC-api.**
+The image displays three available microservices: demoA-api, demoB-api, and demoC-api.
 
-<ul>
-    <li>demoA-api -> It is basically a gateway that is available to be accessed externally and forwards the request to the demoB-api microservice which then retrieves its proper response.</li>
-    <li>demoB-api -> It is inaccessible externally and is only visible on the internal network, which passes the request to another microservice demoC-api, which then retrieves its proper response and sends it to the demoA-api.</li>
-    <li>demoC-api -> This is inaccessible externally and only accessible on the internal network and sends the response to the microservice demoB-api</li>
-    <li>elasticstack* -> This was the solution adopted so that we could implement the log aggregation pattern, which is responsible for monitoring microservices logs</li>
-</ul>
+demoA-api is a gateway that can be accessed externally and forwards requests to the demoB-api microservice. demoB-api, on the other hand, is only visible within the internal network and passes requests to demoC-api, which retrieves the appropriate response and sends it back to demoA-api. demoC-api is also only accessible on the internal network and sends responses to demoB-api.
 
-Now let's understand how the elasticstack was divided and also built from taking the log, processing it and making it available in a visual way, as shown in the image below:
+To implement the log aggregation pattern and monitor microservices logs, we adopted the elasticstack*. This solution was divided into several stages, including capturing logs, processing them, and visualizing them, as illustrated in the image below:
 ![](images/elasticstack_division.png)
 
-We can see in this image that there are 4 dockers available which are: **Filebeat, Logstash, Elasticsearch and Kibana.**
+In the image provided, we can observe the availability of four docker services: Filebeat, Logstash, Elasticsearch, and Kibana.
 
-<ul>
-    <li>Filebeat -> Monitors logs from containers that are on the same network and sends them to logstash</li>
-    <li>Logstash -> Receives the filebeat logs and processes them, in this case we are only processing the information contained in our microservices. After processing, it sends them to elasticsearch.</li>
-    <li>Elasticsearch -> Receive logs, store and index them. We can visualize the logs visually here, where it is also possible to create queries on top of these logs.</li>
-    <li>Kibana -> It is another way of viewing the logs stored in elasticsearch, we can use it as a panel for example and in it we create queries to return information that we consider interesting to view.</li>
-</ul>
+Filebeat is responsible for monitoring logs from containers on the same network and forwarding them to Logstash for processing. Logstash, in turn, receives the logs from Filebeat and processes them, focusing solely on the information contained in our microservices. The processed logs are then sent to Elasticsearch for storage and indexing.
+
+Elasticsearch receives, stores, and indexes the logs, and provides a visual representation of them. It also allows us to create queries based on the logs. Kibana is another tool for visualizing the logs stored in Elasticsearch. It can be used as a dashboard, and allows us to create queries to retrieve specific information of interest.
 
 **Important considerations:**
 <ul>
-    <li>The idea of this project was more focused on demonstrating the application of the log aggregation pattern and this implies in its infrastructure, the microservices themselves are not relevant, they are quite trivial.</li>
-    <li>The project was created to run on any operating system as long as it has docker and docker-compose installed.</li>
-    <li>There are other types of configurations and ways to do it, but the intention here is to be as simple as possible to have a better absorption of the knowledge of this pattern both in theory and in practice.</li>
+    <li>The primary objective of this project is to showcase the application of the log aggregation pattern. Therefore, the focus is not on the microservices themselves, as they are relatively simple.</li>
+    <li>The project has been designed to operate on any operating system with docker and docker-compose installed.</li>
+    <li>While there may be alternative configurations and approaches, the intention here is to keep things as straightforward as possible, to facilitate a better understanding of the log aggregation pattern in both theory and practice.</li>
 </ul>
 
-Well... It's time, let's roll this whole joke? ;)
+Alright, it's time to get started!
 
-1) First we must start all our microservices, as well as our log aggregation. Let's type the command in the terminal: `docker-compose up -d`
-2) Let's wait a few seconds for the solution to upload completely, as soon as the environment is available access the following URL:
+Here's a step-by-step guide to help you through the process:
+
+1) First, we need to start all of our microservices, as well as our log aggregation service. To do this, simply type the following command in your terminal: `docker-compose up -d`
+2) Wait a few seconds for the solution to fully deploy. Once the environment is available, access the following URL: 
 [http://localhost:5601/login?next=%2F]()
-3) We will see this screen:
+3) You will see the login screen, as shown below:
 <br />![](images/login_elastic.png)
 
-Note: The username and password will be filled in automatically, however the access credentials are elastic(user) and changeme(password)
+Note: The access credentials for the default user are as follows:
+- Username: elastic
+- Password: changeme
 
-4) Right after logging in, go to the menu on the side, go to "Analytics" and select the "Discover" option, follow the image for help:
+4) After successfully logging in, navigate to the side menu, select "Analytics", and then click on "Discover". Follow the image below for guidance:
 ![](images/selected_discover_create_index.png)
 
-5) After clicking on "Discover" a modal will appear, which is for creating an index. Click on the "Create index pattern" button and once you do, the following screen will appear, as shown in the image below:
+5) Upon clicking "Discover", a modal window will appear for creating an index pattern. Click on the "Create index pattern" button, and you will be redirected to the following screen, as shown in the image below:
 ![](images/create_index_pattern.png)
 
-<ul>
-    <li>In the first information to be filled in, we must adopt the contains pattern; i.e; I can inform `filebeat-*` that it brings me all the logs, if we wanted something specific to recover the logs referring to the month of that particular year we could adopt `filebeat-7.16.3-2023.03.*` </li>
-    <li>In the second information to be filled in, we must select `@timestamp`, as shown in the image.</li>
-</ul>
+Here are the steps to follow, depending on the screen:
 
-6) Let's run curl: `curl --location --request GET 'http://localhost:8080'` to appear in the logs.
+- In the first field, we must enter the index pattern that matches the names of the log files we want to analyze. We can use the wildcard symbol * to match any characters in the index pattern. For example, if we want to analyze all log files generated by Filebeat, we can use the index pattern filebeat-*. If we want to analyze logs from a specific month and year, we can use a more specific index pattern like filebeat-7.16.3-2023.03.*.
+- In the second field, we must select @timestamp, which is the timestamp field in the log entries that we want to use as the time filter for our analysis. This field indicates when each log entry was created and is commonly used to filter logs by time.
 
-7) After creating this index, we must return to the "Discover" menu again, which will result in the logs, as shown in the following image:
+6) To generate some logs, let's run the following command in the terminal: curl --location --request GET 'http://localhost:8080'
+
+7) After creating the index, we need to navigate back to the "Discover" menu, where we can access the logs, as illustrated in the image below:
 ![](images/detail_logs.png)
