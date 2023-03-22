@@ -14,7 +14,7 @@ demoA-api is behind a gateway that can be accessed externally and forwards reque
 To implement the log aggregation pattern and monitor microservices logs, we adopted ELKB(elasticstack)*. This solution was divided into several stages, including capturing logs, processing them, and visualizing them, as illustrated in the image below:
 ![](images/elasticstack_division.png)
 
-In the image provided, we can observe the availability of four docker services: Filebeat, Logstash, Elasticsearch, and Kibana.
+In the image provided, we can observe the availability of four docker services(EKLB): Filebeat, Logstash, Elasticsearch, and Kibana.
 
 Filebeat is responsible for monitoring logs from containers on the same network and forwarding them to Logstash for processing. Logstash, in turn, receives the logs from Filebeat and processes them, focusing solely on the information contained in our microservices. The processed logs are then sent to Elasticsearch for storage and indexing.
 
