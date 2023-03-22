@@ -9,9 +9,9 @@ Now, let's take a closer look at the project. It's divided into several microser
 
 The image displays three available microservices: demoA-api, demoB-api, and demoC-api.
 
-demoA-api is a gateway that can be accessed externally and forwards requests to the demoB-api microservice. demoB-api, on the other hand, is only visible within the internal network and passes requests to demoC-api, which retrieves the appropriate response and sends it back to demoA-api. demoC-api is also only accessible on the internal network and sends responses to demoB-api.
+demoA-api is behind a gateway that can be accessed externally and forwards requests to the demoB-api microservice. demoB-api, on the other hand, is only visible within the internal network and passes requests to demoC-api, which retrieves the appropriate response and sends it back to demoA-api. demoC-api is also only accessible on the internal network and sends responses to demoB-api.
 
-To implement the log aggregation pattern and monitor microservices logs, we adopted the elasticstack*. This solution was divided into several stages, including capturing logs, processing them, and visualizing them, as illustrated in the image below:
+To implement the log aggregation pattern and monitor microservices logs, we adopted ELKB(elasticstack)*. This solution was divided into several stages, including capturing logs, processing them, and visualizing them, as illustrated in the image below:
 ![](images/elasticstack_division.png)
 
 In the image provided, we can observe the availability of four docker services: Filebeat, Logstash, Elasticsearch, and Kibana.
